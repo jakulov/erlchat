@@ -1,0 +1,12 @@
+{application, boarderl,
+ [
+  {description, "Team DashBoard"},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {mod, { boarderl_app, []}},
+  {env, []}
+ ]}.
