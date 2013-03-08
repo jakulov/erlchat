@@ -14,7 +14,7 @@ websocket_init(_Any, Req, _Opt) ->
 	gproc:reg({p, l, main_room}),
 	{ok, Req, undefined, hibernate}.
 
-websocket_handle({text: Data}, Req, State) ->
+websocket_handle({text, Data}, Req, State) ->
 	gproc:send({p, l, main_room}, Data),
 	{ok, Req, State,hibernate}.
 

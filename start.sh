@@ -1,0 +1,1 @@
+erl -sname boarderl -pa ebin -pa deps/cowboy/ebin -pa deps/gproc/ebin -boot start_sasl -s boarderl_app
