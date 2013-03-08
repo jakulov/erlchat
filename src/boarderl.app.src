@@ -1,6 +1,6 @@
 {application, boarderl,
  [
-  {description, "Team DashBoard"},
+  {description, ""},
   {vsn, "1"},
   {registered, []},
   {applications, [

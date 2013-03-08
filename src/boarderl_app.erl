@@ -3,7 +3,7 @@
 -behaviour(application).
 
 %% Application callbacks
--export([start/2, stop/1]).
+-export([start/0, start/2, stop/1]).
 
 %% ===================================================================
 %% Application callbacks
@@ -14,13 +14,21 @@ start() ->
 	application:start(boarderl).
 
 start(_StartType, _StartArgs) ->
-	Dispatch = [{dispatch, [
-		{'_', [
-			{[<<"websocket">>], boarderl_websocket, []},
-			{[], boarderl_page, []}
-		]}
-	]}],
-	cowboy:start_listner(boarderl_listner, 5, cowboy_tcp_transport, [{port, 8080}], cowboy_http_protoctol, Dispatch),
+	%Dispatch = [{dispatch, [
+	%	{'_', [
+	%		{[<<"websocket">>], boarderl_websocket, []},
+	%		{[], boarderl_page, []}
+	%	]}
+	%]}],
+	%cowboy:start_listner(boarderl_listner, 5, cowboy_tcp_transport, [{port, 9090}], cowboy_http_protoctol, Dispatch),
+	cowboy:start_listener(whatever, 5, cowboy_tcp_transport, [{port,9090}], cowboy_http_protocol, 
+            [{dispatch,[
+                        {'_',[
+                               {[<<"websocket">>],boarderl_websocket,[]},
+                               {[],boarderl_page,[]}
+                             ]}
+                       ]}]
+          ),
     boarderl_sup:start_link().
 
 stop(_State) ->
