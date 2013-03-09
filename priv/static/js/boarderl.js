@@ -1,4 +1,4 @@
-var wsHost = "ws://localhost:9090/websocket";
+var wsHost = "ws://192.168.1.102:9090/websocket";
 $(document).ready(function() {
 	
 	var ws; // WebSocket Object
@@ -19,6 +19,7 @@ $(document).ready(function() {
 			var receivedMsg = $.parseJSON(evt.data);
 			if(!pid) {
 				pid = receivedMsg.pid;
+				document.title = document.title + ' - ' + pid;
 			}
 			var context = (pid == receivedMsg.pid) ? "self" : "msg";
 			addStatus('<b>' + receivedMsg.pid + ":</b> " + receivedMsg.text + "", context);
@@ -32,11 +33,14 @@ $(document).ready(function() {
 	}
 
 	$('#chat').submit(function(){
-		sendMessage(ws);
+		if($('#msg').val()) {
+			sendMessage(ws);
+		}
 		return false;
 	});
 
 	$('#msg').focus();
+	$('#send').click(function(){$('#msg').focus();});
 });
 
 function addStatus(text, context){

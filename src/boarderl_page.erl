@@ -7,9 +7,12 @@ init(_Transport, Req, []) ->
 
 handle(Req, State) ->
 	Html = get_html(),
-	{ok, Req2} = cowboy_req:reply(200,
+	{ok, Req2} = cowboy_req:reply(
+		200,
 		[{<<"content-type">>, <<"text/html">>}],
-		Html, Req),
+		Html, 
+		Req
+	),
 	{ok, Req2, State}.
 
 terminate(_Reason, _Req, _State) ->
