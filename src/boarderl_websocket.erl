@@ -8,18 +8,20 @@ init({tcp, http}, _Req, _Opt) ->
 
 websocket_init(_Any, Req, _Opt) ->
 	gproc:reg({p, l, main_room}),
-	{ok, Req, undefined, hibernate}.
+	{ok, Req, undefined}.
 
 websocket_handle({text, Data}, Req, State) ->
-	gproc:send({p, l, main_room}, Data),
+	Pid = self(),
+	Json = lists:flatten(io_lib:format("{\"pid\":\"~p\", \"text\":\"", [Pid])),
+	gproc:send({p, l, main_room}, [Json, Data, <<"\"}">>]),
 	{ok, Req, State};
 
 websocket_handle(_Any, Req, State) ->
 	{ok, Req, State}.
 
-websocket_info(_Info, Req, State) ->
-	io:format("~p~n",[_Info]),
-	{reply, {text, _Info}, Req, State}.
+websocket_info(Info, Req, State) ->
+	io:format("~p~n",[Info]),
+	{reply, {text, Info}, Req, State}.
 
 websocket_terminate(_Reason, _Req, _State) ->
 	ok.

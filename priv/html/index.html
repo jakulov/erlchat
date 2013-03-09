@@ -1,13 +1,17 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<script type="text/javascript" src="/static/js/boarderl.js"></script>
+	<link rel="stylesheet" type="text/css" href="/static/css/index.css">
+	<script type="text/javascript" src="/static/js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="/static/js/boarderl.js"></script>
 </head>
-<body onload="ready();">
-	<form name="chat" onsubmit="ws.send(document.chat.msg.value); return false;">
-		<input name="msg" type="text"/>
-		<input type="submit"/>
-	</form>
-	<div id="status"></div>
+<body>
+	<div id="container">
+		<form name="chat" id="chat">
+			<input name="msg" id="msg" type="text"/>
+			<input type="submit" value="Send" id="send"/>
+		</form>
+		<div id="status"></div>
+	</div>
 </body>
 </html>

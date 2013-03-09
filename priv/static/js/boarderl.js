@@ -1,34 +1,51 @@
-var ws;
-function addStatus(text){
-	var date = new Date();
-	document.getElementById('status').innerHTML
-		= document.getElementById('status').innerHTML
-		+ date + ": " + text + "<br/>";
-}
-function ready(){
+var wsHost = "ws://localhost:9090/websocket";
+$(document).ready(function() {
+	
+	var ws; // WebSocket Object
+	var pid;
+	
 	if ("MozWebSocket" in window) {
 		WebSocket = MozWebSocket;
 	}
+	
 	if ("WebSocket" in window) {
-		// browser supports websockets
-		ws = new WebSocket("ws://localhost:9090/websocket");
+		ws = new WebSocket(wsHost);
 		ws.onopen = function() {
-			// websocket is connected
-			addStatus("websocket connected!");
-			// send hello data to server.
-			ws.send("hello server!");
-			addStatus("sent message to server: 'hello server'!");
+			addStatus("websocket connected!", "open");
+			ws.send("joined chat!");
+			addStatus("entering chat...", "send");
 		};
 		ws.onmessage = function (evt) {
-			var receivedMsg = evt.data;
-			addStatus("server sent the following: '" + receivedMsg + "'");
+			var receivedMsg = $.parseJSON(evt.data);
+			if(!pid) {
+				pid = receivedMsg.pid;
+			}
+			var context = (pid == receivedMsg.pid) ? "self" : "msg";
+			addStatus('<b>' + receivedMsg.pid + ":</b> " + receivedMsg.text + "", context);
 		};
 		ws.onclose = function() {
-			// websocket was closed
-			addStatus("websocket was closed");
+			addStatus("websocket was closed", "close");
 		};
-	} else {
-		// browser does not support websockets
-		addStatus("sorry, your browser does not support websockets.");
+	} 
+	else {
+		addStatus("sorry, your browser does not support websockets.", "error");
 	}
+
+	$('#chat').submit(function(){
+		sendMessage(ws);
+		return false;
+	});
+
+	$('#msg').focus();
+});
+
+function addStatus(text, context){
+	var date = new Date();
+	var msg = $('<p>').addClass(context).html(date.toLocaleTimeString() + ': ' + text);
+	$("#status").append($(msg));
+}
+
+function sendMessage(ws) {
+	ws.send($('#msg').val());
+	$('#msg').val('');
 }
