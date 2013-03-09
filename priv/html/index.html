@@ -1,0 +1,13 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<script type="text/javascript" src="/static/js/boarderl.js"></script>
+</head>
+<body onload="ready();">
+	<form name="chat" onsubmit="ws.send(document.chat.msg.value); return false;">
+		<input name="msg" type="text"/>
+		<input type="submit"/>
+	</form>
+	<div id="status"></div>
+</body>
+</html>
