@@ -1,4 +1,4 @@
-var wsHost = "ws://192.168.1.102:9090/websocket";
+var wsHost = "ws://localhost:9090/websocket";
 $(document).ready(function() {
 	
 	var ws; // WebSocket Object
